@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bralio AI — Your Corporate English Coach on WhatsApp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --teal: #14B8A6;
+            --deep-teal: #0D9488;
+            --teal-dark: #134E4A;
+            --mint: #CCFBF1;
+            --orange: #F97316;
+            --slate-dark: #1E293B;
+            --slate-mid: #94A3B8;
+            --midnight: #0F172A;
+            --cloud: #F8FAFC;
+            --white: #FFFFFF;
+            --slate-100: #F1F5F9;
+            --slate-200: #E2E8F0;
+            --slate-600: #475569;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cloud);
+            color: var(--slate-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(248, 250, 252, 0.88);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--slate-200);
+        }
+        .nav-inner {
+            max-width: 1100px; margin: 0 auto; padding: 0 32px;
+            height: 64px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800; font-size: 28px; color: var(--slate-dark);
+            text-decoration: none; display: flex; align-items: baseline; gap: 5px;
+        }
+        .logo-ai { color: var(--orange); font-size: 28px; letter-spacing: 0.08em; }
+        .nav-cta {
+            background: var(--deep-teal); color: var(--white);
+            padding: 10px 24px; border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px; font-weight: 700; text-decoration: none;
+            transition: background 0.2s;
+        }
+        .nav-cta:hover { background: var(--teal-dark); }
+
+        /* ─── HERO ─── */
+        .hero {
+            max-width: 800px; margin: 0 auto;
+            padding: 130px 32px 80px; text-align: center;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--mint); color: var(--teal-dark);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13px; font-weight: 700;
+            padding: 7px 16px; border-radius: 100px; margin-bottom: 28px;
+        }
+        .hero h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(36px, 5vw, 54px);
+            font-weight: 800; line-height: 1.1; letter-spacing: -1.5px;
+            color: var(--midnight); margin-bottom: 20px;
+        }
+        .hero h1 .highlight { color: var(--deep-teal); }
+        .hero-sub {
+            font-size: 18px; color: var(--slate-600);
+            line-height: 1.7; margin-bottom: 40px; max-width: 580px; margin-left: auto; margin-right: auto;
+        }
+
+        /* ─── WAITLIST FORM ─── */
+        .waitlist-form {
+            max-width: 480px; margin: 0 auto 16px;
+        }
+        .waitlist-fields {
+            display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;
+        }
+        .waitlist-input {
+            flex: 1; min-width: 160px; padding: 14px 16px;
+            border: 1.5px solid var(--slate-200); border-radius: 10px;
+            font-size: 15px; font-family: inherit; background: var(--white);
+            color: var(--slate-dark); outline: none; transition: border-color 0.2s;
+        }
+        .waitlist-input:focus { border-color: var(--teal); }
+        .waitlist-input::placeholder { color: var(--slate-mid); }
+        .waitlist-btn {
+            width: 100%; background: var(--deep-teal); color: var(--white); border: none;
+            padding: 15px 28px; border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 16px; font-weight: 700; cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .waitlist-btn:hover { background: var(--teal-dark); }
+        .waitlist-btn:active { transform: scale(0.98); }
+        .waitlist-note {
+            font-size: 13px; color: var(--slate-mid); text-align: center; margin-top: 12px;
+        }
+
+        /* ─── URGENCY BANNER ─── */
+        .urgency-banner {
+            max-width: 520px; margin: 24px auto 0;
+            background: #FFF7ED; border: 1px solid #FED7AA;
+            border-radius: 12px; padding: 16px 20px;
+            display: flex; align-items: flex-start; gap: 12px;
+        }
+        .urgency-icon { font-size: 20px; flex-shrink: 0; }
+        .urgency-text { font-size: 14px; color: #9A3412; line-height: 1.55; }
+        .urgency-text strong { color: #7C2D12; }
+
+        /* ─── PAIN SECTION ─── */
+        .pain {
+            background: var(--midnight); color: var(--white);
+            padding: 80px 32px;
+        }
+        .pain-inner {
+            max-width: 760px; margin: 0 auto;
+        }
+        .pain-intro {
+            text-align: center; margin-bottom: 56px;
+        }
+        .pain h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(26px, 3.5vw, 38px);
+            font-weight: 800; line-height: 1.2; letter-spacing: -0.5px;
+            margin-bottom: 20px;
+        }
+        .pain-intro-text {
+            font-size: 17px; color: var(--slate-mid); line-height: 1.75;
+            max-width: 600px; margin: 0 auto;
+        }
+        .pain-intro-text strong { color: var(--white); }
+        .pain-question {
+            text-align: center; margin-bottom: 48px;
+        }
+        .pain-question span {
+            display: inline-block;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px; font-weight: 700;
+            color: var(--teal); background: rgba(20, 184, 166, 0.1);
+            padding: 8px 22px; border-radius: 100px;
+            border: 1px solid rgba(20, 184, 166, 0.2);
+        }
+
+        /* ─── PAIN CARDS ─── */
+        .pain-cards {
+            display: flex; flex-direction: column; gap: 24px;
+        }
+        .pain-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; padding: 32px 30px;
+        }
+        .pain-headline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(20px, 2.5vw, 24px);
+            font-weight: 800; color: var(--white);
+            line-height: 1.25; margin-bottom: 12px;
+        }
+        .pain-headline em {
+            font-style: normal;
+            color: var(--orange);
+        }
+        .pain-explain {
+            font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.65;
+        }
+        .pain-explain strong {
+            color: var(--teal); font-weight: 600;
+        }
+
+        /* ─── WHAT IS BRALIO ─── */
+        .what-section {
+            max-width: 1100px; margin: 0 auto; padding: 80px 32px;
+        }
+        .what-header { text-align: center; margin-bottom: 56px; }
+        .section-eyebrow {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 12px; font-weight: 700;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--deep-teal); margin-bottom: 10px;
+        }
+        .what-header h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 800; letter-spacing: -0.5px;
+            color: var(--midnight); margin-bottom: 14px;
+        }
+        .what-header p {
+            font-size: 17px; color: var(--slate-600);
+            max-width: 540px; margin: 0 auto;
+        }
+        .two-pillars {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+        }
+        .pillar {
+            background: var(--white); border: 1px solid var(--slate-200);
+            border-radius: 18px; padding: 36px 30px;
+            transition: box-shadow 0.3s;
+        }
+        .pillar:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.06); }
+        .pillar-tag {
+            display: inline-block;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 5px 12px; border-radius: 6px; margin-bottom: 18px;
+        }
+        .pillar-tag.learn { background: var(--mint); color: var(--teal-dark); }
+        .pillar-tag.practice { background: #FFF7ED; color: #9A3412; }
+        .pillar h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 22px; font-weight: 800; color: var(--midnight);
+            margin-bottom: 12px;
+        }
+        .pillar p {
+            font-size: 15px; color: var(--slate-600); line-height: 1.7; margin-bottom: 20px;
+        }
+        .pillar-list {
+            list-style: none; display: flex; flex-direction: column; gap: 10px;
+        }
+        .pillar-list li {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 14px; color: var(--slate-600); line-height: 1.5;
+        }
+        .pillar-list li svg {
+            width: 18px; height: 18px; color: var(--deep-teal); flex-shrink: 0; margin-top: 2px;
+        }
+
+        /* ─── MOCKUP SECTION ─── */
+        .mockup-section {
+            max-width: 1100px; margin: 0 auto; padding: 0 32px 80px;
+        }
+        .mockup-header { text-align: center; margin-bottom: 40px; }
+        .mockup-header h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(24px, 3vw, 32px);
+            font-weight: 800; color: var(--midnight); letter-spacing: -0.5px;
+        }
+        .mockup-phone {
+            max-width: 380px; margin: 0 auto;
+            background: var(--white); border-radius: 28px;
+            box-shadow: 0 24px 80px rgba(15,23,42,0.12), 0 2px 6px rgba(15,23,42,0.04);
+            overflow: hidden; border: 1px solid var(--slate-200);
+        }
+        .mockup-header-bar {
+            background: var(--teal-dark); color: var(--white);
+            padding: 14px 18px; display: flex; align-items: center; gap: 12px;
+        }
+        .mockup-avatar {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal) 0%, var(--deep-teal) 100%);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800; font-size: 14px;
+        }
+        .mockup-name {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700; font-size: 15px;
+        }
+        .mockup-status { font-size: 11px; opacity: 0.75; }
+        .mockup-chat {
+            padding: 16px; display: flex; flex-direction: column; gap: 10px;
+            background: #ECE5DD;
+        }
+        .msg {
+            max-width: 88%; padding: 10px 13px; border-radius: 10px;
+            font-size: 13.5px; line-height: 1.5;
+        }
+        .msg-bralio { background: var(--white); align-self: flex-start; border-top-left-radius: 3px; }
+        .msg-user { background: #DCF8C6; align-self: flex-end; border-top-right-radius: 3px; }
+        .msg-time { font-size: 10px; color: #999; text-align: right; margin-top: 3px; }
+        .msg b { color: var(--teal-dark); }
+        .msg-voice { display: flex; align-items: center; gap: 8px; }
+        .voice-wave { display: flex; align-items: center; gap: 2px; }
+        .voice-wave span { width: 3px; border-radius: 2px; background: var(--teal-dark); }
+        .msg-label {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 10px; font-weight: 700; color: var(--deep-teal);
+            text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px;
+        }
+        .feedback-item {
+            display: flex; align-items: flex-start; gap: 6px; margin-top: 6px;
+            font-size: 13px; line-height: 1.45;
+        }
+        .feedback-icon { flex-shrink: 0; font-size: 12px; margin-top: 2px; }
+
+        /* ─── HOW IT WILL WORK ─── */
+        .how-section {
+            max-width: 1100px; margin: 0 auto; padding: 80px 32px;
+            border-top: 1px solid var(--slate-200);
+        }
+        .how-header { text-align: center; margin-bottom: 56px; }
+        .how-header h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 800; letter-spacing: -0.5px;
+            color: var(--midnight); margin-bottom: 10px;
+        }
+        .how-header p { font-size: 17px; color: var(--slate-600); }
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .step {
+            text-align: center; background: var(--white);
+            border: 1px solid var(--slate-200); border-radius: 18px;
+            padding: 36px 24px;
+        }
+        .step-number {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: var(--midnight); color: var(--white);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800; font-size: 18px; margin: 0 auto 18px;
+        }
+        .step h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 17px; font-weight: 700; color: var(--midnight);
+            margin-bottom: 8px;
+        }
+        .step p { font-size: 14px; color: var(--slate-600); line-height: 1.6; }
+        .step-time {
+            display: inline-block; margin-top: 12px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 12px; font-weight: 700;
+            color: var(--deep-teal); background: var(--mint);
+            padding: 4px 12px; border-radius: 100px;
+        }
+
+        /* ─── IS IT FOR YOU ─── */
+        .for-section {
+            background: var(--white);
+            border-top: 1px solid var(--slate-200);
+            border-bottom: 1px solid var(--slate-200);
+            padding: 80px 32px;
+        }
+        .for-inner { max-width: 900px; margin: 0 auto; }
+        .for-inner h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 800; letter-spacing: -0.5px;
+            color: var(--midnight); text-align: center;
+            margin-bottom: 48px;
+        }
+        .for-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .for-card { border-radius: 16px; padding: 32px 28px; }
+        .for-card.not-for { background: var(--slate-100); border: 1px solid var(--slate-200); }
+        .for-card.yes-for { background: var(--midnight); color: var(--white); }
+        .for-card h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px; font-weight: 700;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .for-card.not-for h3 { color: var(--slate-mid); }
+        .for-card.yes-for h3 { color: var(--teal); }
+        .for-card ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+        .for-card ul li {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 15px; line-height: 1.55;
+        }
+        .for-card.not-for li::before {
+            content: '✕'; color: #EF4444; font-weight: 700; font-size: 13px;
+            flex-shrink: 0; margin-top: 2px;
+        }
+        .for-card.yes-for li::before {
+            content: '✓'; color: var(--teal); font-weight: 700; font-size: 14px;
+            flex-shrink: 0; margin-top: 1px;
+        }
+
+        /* ─── PRICING TEASER ─── */
+        .pricing-teaser {
+            max-width: 700px; margin: 0 auto; padding: 80px 32px;
+            text-align: center;
+        }
+        .pricing-teaser h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(26px, 3.5vw, 36px);
+            font-weight: 800; letter-spacing: -0.5px;
+            color: var(--midnight); margin-bottom: 16px;
+        }
+        .pricing-teaser p {
+            font-size: 16px; color: var(--slate-600); line-height: 1.7;
+            max-width: 520px; margin: 0 auto;
+        }
+        .pricing-pills {
+            display: flex; justify-content: center; gap: 12px;
+            margin-top: 28px; flex-wrap: wrap;
+        }
+        .pricing-pill {
+            background: var(--white); border: 1px solid var(--slate-200);
+            border-radius: 100px; padding: 10px 22px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px; font-weight: 600; color: var(--slate-dark);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .pricing-pill svg {
+            width: 16px; height: 16px; color: var(--deep-teal);
+        }
+
+        /* ─── BOTTOM CTA ─── */
+        .bottom-cta {
+            background: var(--midnight); padding: 80px 32px; text-align: center;
+        }
+        .bottom-cta h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 800; letter-spacing: -0.5px;
+            color: var(--white); margin-bottom: 12px;
+        }
+        .bottom-cta > p {
+            font-size: 17px; color: var(--slate-mid);
+            max-width: 500px; margin: 0 auto 36px;
+        }
+        .bottom-cta .waitlist-form { max-width: 480px; margin: 0 auto; }
+        .bottom-cta .waitlist-note { color: rgba(255,255,255,0.4); }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--midnight); border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 40px 32px;
+        }
+        .footer-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: flex-start;
+            flex-wrap: wrap; gap: 24px;
+        }
+        .footer-brand {}
+        .footer-logo {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800; font-size: 18px; color: var(--white);
+            margin-bottom: 8px;
+        }
+        .footer-logo span { color: var(--orange); }
+        .footer-contact { font-size: 13px; color: var(--slate-mid); }
+        .footer-contact a { color: var(--teal); text-decoration: none; }
+        .footer-contact a:hover { text-decoration: underline; }
+        .footer-links {
+            display: flex; gap: 24px;
+        }
+        .footer-links a {
+            font-size: 13px; color: var(--slate-mid); text-decoration: none;
+        }
+        .footer-links a:hover { color: var(--teal); }
+        .footer-copy {
+            width: 100%; text-align: center;
+            font-size: 12px; color: rgba(148,163,184,0.5);
+            margin-top: 16px; padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            .two-pillars, .for-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr; }
+            .waitlist-fields { flex-direction: column; }
+            .waitlist-input { min-width: 100%; }
+            .pain-cards { gap: 16px; }
+            .footer-inner { flex-direction: column; align-items: center; text-align: center; }
+            .footer-links { flex-direction: column; align-items: center; gap: 12px; }
+        }
+
+        /* ─── ANIMATIONS ─── */
+        .fade-in {
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+    <div class="nav-inner">
+        <a href="#" class="logo">Bralio <span class="logo-ai">AI</span></a>
+        <a href="#waitlist" class="nav-cta">Join the waitlist</a>
+    </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+    <div class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Coming soon to WhatsApp
+    </div>
+
+    <h1>Speak clear, confident <span class="highlight">corporate English</span> — starting with your first lesson.</h1>
+
+    <p class="hero-sub">Bralio AI is your personal corporate English coach, delivered daily to your WhatsApp. Tailored lessons, pronunciation feedback, and on-demand coaching — inside the app you already use. No downloads. No classes. No scheduling.</p>
+
+    <!-- Waitlist form -->
+    <form class="waitlist-form" id="heroForm"
+          action="https://formspree.io/f/YOUR_FORMSPREE_ID"
+          method="POST"
+          onsubmit="handleWaitlist(event)">
+        <div class="waitlist-fields">
+            <input type="text" class="waitlist-input" name="name" placeholder="Your first name" required>
+            <input type="email" class="waitlist-input" name="email" placeholder="Your email" required>
+        </div>
+        <button type="submit" class="waitlist-btn">Join the waitlist &rarr;</button>
+        <p class="waitlist-note">Be first in line when we launch.</p>
+        <!-- Formspree: nicer email subject line -->
+        <input type="hidden" name="_subject" value="New Bralio waitlist signup (hero)">
+        <!-- Formspree honeypot: spam bots fill this; humans don't see it -->
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;" aria-hidden="true">
+    </form>
+
+    <!-- Urgency -->
+    <div class="urgency-banner">
+        <span class="urgency-icon">🔥</span>
+        <div class="urgency-text">
+            <strong>Limited spots for our first group.</strong> Join the waitlist for exclusive early-adopter pricing, a chance to beta test Bralio AI for free, and updates before anyone else.
+        </div>
+    </div>
+</section>
+
+<!-- ═══ PAIN SECTION ═══ -->
+<section class="pain fade-in">
+    <div class="pain-inner">
+        <div class="pain-intro">
+            <h2>You know English.<br>But corporate English is a different game.</h2>
+            <p class="pain-intro-text">You can hold a conversation. You can read emails. But when it's time to <strong>present in a meeting</strong>, <strong>pitch an idea</strong>, <strong>give your opinion</strong>, or <strong>handle a difficult conversation</strong> at work — you freeze. The thought is there, clear in your head, but the right words <strong>won't come out</strong>.</p>
+        </div>
+
+        <div class="pain-question">
+            <span>Does this sound familiar?</span>
+        </div>
+
+        <div class="pain-cards">
+            <!-- Pain 1 -->
+            <div class="pain-card">
+                <div class="pain-headline">You <em>freeze in meetings</em> when it's your turn to speak.</div>
+                <p class="pain-explain">Not because you don't know what to say — but because <strong>you don't know the right words, connectors, vocabulary, and phrasing</strong> to say it professionally. So you stay quiet. And your ideas never get heard.</p>
+            </div>
+
+            <!-- Pain 2 -->
+            <div class="pain-card">
+                <div class="pain-headline">You <em>avoid giving your opinion</em> in front of your team.</div>
+                <p class="pain-explain">Because you don't know how to <strong>disagree politely, push back with authority, or interrupt without sounding rude</strong>. So you nod along — even when you have something important to say.</p>
+            </div>
+
+            <!-- Pain 3 -->
+            <div class="pain-card">
+                <div class="pain-headline">You're an expert in your field — but every time you speak, <em>you sound like you're not</em>.</div>
+                <p class="pain-explain">Because <strong>filler words, hesitation, and pronunciation gaps</strong> make you sound less confident and less competent than you actually are. People judge your ideas by how you deliver them — and you know it.</p>
+            </div>
+
+            <!-- Pain 4 -->
+            <div class="pain-card">
+                <div class="pain-headline">You know you're the best for the job — but <em>you can't get past the interview</em>.</div>
+                <p class="pain-explain">You have the skills, the experience, the drive. But when it matters most, <strong>you can't articulate your value clearly, confidently, and professionally in English</strong>. And the opportunity goes to someone who can.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ WHAT IS BRALIO AI ═══ -->
+<section class="what-section fade-in">
+    <div class="what-header">
+        <p class="section-eyebrow">Daily lessons + actionable improvement</p>
+        <h2>Learn the language. Then put it to work.</h2>
+        <p>Bralio teaches you corporate English — then gives you tailored feedback so you actually improve. Learn and practice, all inside WhatsApp.</p>
+    </div>
+
+    <div class="two-pillars">
+        <div class="pillar">
+            <div class="pillar-tag learn">Learn</div>
+            <h3>The educational component</h3>
+            <p>Daily lessons designed to build your corporate English toolkit — vocabulary, phrases, connectors, and real-world communication strategies used in professional settings.</p>
+            <ul class="pillar-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Written lessons on corporate vocabulary, phrases, and connectors</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Written evaluations to test your comprehension</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Spoken drills to build fluency and muscle memory</li>
+            </ul>
+        </div>
+        <div class="pillar">
+            <div class="pillar-tag practice">Practice</div>
+            <h3>The practical component</h3>
+            <p>Tailored feedback on your actual English — written and spoken. Bralio will analyze how you communicate and tell you exactly what to fix and how.</p>
+            <ul class="pillar-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Written feedback: grammar, vocabulary, and tone corrections</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Voice analysis: pronunciation, filler words, prosody</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>On-demand help: "How do I open a meeting?" "How do I ask for a raise?"</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ MOCKUP — Below "How it works" ═══ -->
+<section class="mockup-section fade-in">
+    <div class="mockup-header">
+        <p class="section-eyebrow">Your coach, always in your pocket</p>
+        <h2>Right inside WhatsApp — where you already are</h2>
+    </div>
+    <div class="mockup-phone">
+        <div class="mockup-header-bar">
+            <div class="mockup-avatar">B</div>
+            <div>
+                <div class="mockup-name">Bralio AI</div>
+                <div class="mockup-status">online</div>
+            </div>
+        </div>
+        <div class="mockup-chat">
+            <div class="msg msg-user">
+                How do I disagree with my manager without sounding rude? 😅
+                <div class="msg-time">9:01 AM</div>
+            </div>
+            <div class="msg msg-bralio">
+                Great question! Instead of "I don't agree," use a <b>corporate connector</b>:<br><br>
+                <em>"I see your point, however I'd like to suggest an alternative approach."</em><br><br>
+                This shows respect while asserting your opinion. Try saying it out loud 👇
+                <div class="msg-time">9:01 AM</div>
+            </div>
+            <div class="msg msg-user">
+                <div class="msg-voice">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#075E54"><path d="M8 5v14l11-7z"/></svg>
+                    <div class="voice-wave">
+                        <span style="height:6px"></span><span style="height:14px"></span>
+                        <span style="height:10px"></span><span style="height:18px"></span>
+                        <span style="height:12px"></span><span style="height:16px"></span>
+                        <span style="height:8px"></span><span style="height:14px"></span>
+                        <span style="height:6px"></span><span style="height:12px"></span>
+                        <span style="height:18px"></span><span style="height:10px"></span>
+                    </div>
+                    <span style="font-size:11px;color:#666;">0:05</span>
+                </div>
+                <div class="msg-time">9:02 AM</div>
+            </div>
+            <div class="msg msg-bralio">
+                <div class="msg-label">Voice Analysis</div>
+                <div class="feedback-item">
+                    <span class="feedback-icon">🗣️</span>
+                    <span><b>Pronunciation:</b> I noticed "the" sounded more like "de" — super common for Spanish speakers. That <b>th</b> sound doesn't exist in Latin American Spanish, so your brain maps it to D. Trick: tongue between your teeth and blow air. Practice: <em>"the report, the team, the deadline."</em></span>
+                </div>
+                <div class="feedback-item">
+                    <span class="feedback-icon">⚠️</span>
+                    <span><b>Filler words:</b> Caught 2x "um" and one "este" sneaking in — totally normal! Try swapping those for a quick silent pause or "well" instead.</span>
+                </div>
+                <div class="feedback-item">
+                    <span class="feedback-icon">✅</span>
+                    <span><b>Connector usage:</b> Great use of "however" — that's a strong corporate connector. Keep it up!</span>
+                </div>
+                <div class="msg-time">9:02 AM</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ HOW IT WILL WORK ═══ -->
+<section class="how-section fade-in">
+    <div class="how-header">
+        <h2>How it works</h2>
+        <p>No apps. No onboarding forms. No passwords. Just WhatsApp.</p>
+    </div>
+    <div class="steps">
+        <div class="step">
+            <div class="step-number">1</div>
+            <h3>Join the waitlist</h3>
+            <p>Enter your name and email. You'll receive exclusive updates, free tips, and early access when Bralio AI launches.</p>
+            <div class="step-time">10 seconds</div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <h3>Get your invite</h3>
+            <p>When we launch, early waitlist members will be first in line — with exclusive pricing or free beta access.</p>
+            <div class="step-time">Limited spots</div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <h3>Start learning every day</h3>
+            <p>Bralio AI will message you daily on WhatsApp — lessons, drills, and feedback. Like having a coach in your back pocket, 365 days a year.</p>
+            <div class="step-time">5 min/day</div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ IS IT FOR YOU ═══ -->
+<section class="for-section fade-in">
+    <div class="for-inner">
+        <h2>Is Bralio AI for you?</h2>
+        <div class="for-grid">
+            <div class="for-card not-for">
+                <h3>Bralio is NOT for you if...</h3>
+                <ul>
+                    <li>You're a beginner who needs to learn basic English from scratch</li>
+                    <li>You just want to binge-watch a course and never actually practice</li>
+                    <li>You're not willing to invest 5 minutes a day into improving your English</li>
+                </ul>
+            </div>
+            <div class="for-card yes-for">
+                <h3>Bralio IS for you if...</h3>
+                <ul>
+                    <li>You know English but can't sound professional or authoritative at work</li>
+                    <li>You freeze in meetings, dodge opinions, or rewrite every email five times</li>
+                    <li>You want to lead conversations, nail interviews, and command respect</li>
+                    <li>You need a coach in your pocket — not a classroom with a schedule</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ PRICING TEASER ═══ -->
+<section class="pricing-teaser fade-in">
+    <p class="section-eyebrow">Pricing</p>
+    <h2>Affordable. Accessible. Risk-free.</h2>
+    <p>Bralio AI will be a simple monthly subscription — a fraction of what private tutors or language schools charge. Plus, every plan will include a risk-free trial so you can experience it before committing.</p>
+    <div class="pricing-pills">
+        <div class="pricing-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+            Simple monthly plan
+        </div>
+        <div class="pricing-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+            Risk-free trial included
+        </div>
+        <div class="pricing-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+            Cancel anytime
+        </div>
+    </div>
+</section>
+
+<!-- ═══ BOTTOM CTA ═══ -->
+<section class="bottom-cta fade-in" id="waitlist">
+    <h2>Don't wait until launch day.<br>Get in line now.</h2>
+    <p>Join the waitlist for early access, exclusive pricing, and a chance to beta test Bralio AI for free. Spots are limited.</p>
+    <form class="waitlist-form"
+          action="https://formspree.io/f/YOUR_FORMSPREE_ID"
+          method="POST"
+          onsubmit="handleWaitlist(event)">
+        <div class="waitlist-fields">
+            <input type="text" class="waitlist-input" name="name" placeholder="Your first name" required>
+            <input type="email" class="waitlist-input" name="email" placeholder="Your email" required>
+        </div>
+        <button type="submit" class="waitlist-btn">Join the waitlist &rarr;</button>
+        <p class="waitlist-note">No spam. Just early access and exclusive updates.</p>
+        <!-- Formspree: nicer email subject line -->
+        <input type="hidden" name="_subject" value="New Bralio waitlist signup (bottom CTA)">
+        <!-- Formspree honeypot: spam bots fill this; humans don't see it -->
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;" aria-hidden="true">
+    </form>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <div class="footer-logo">Bralio <span>AI</span></div>
+            <div class="footer-contact">
+                Questions? <a href="mailto:bralioapp@gmail.com">bralioapp@gmail.com</a>
+            </div>
+        </div>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+        </div>
+        <div class="footer-copy">
+            &copy; 2026 Bralio AI. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<script>
+    async function handleWaitlist(e) {
+        e.preventDefault();
+        const form = e.target;
+        const name = form.querySelector('[name="name"]').value.trim();
+        const email = form.querySelector('[name="email"]').value.trim();
+        if (!name || !email) return;
+
+        const btn = form.querySelector('.waitlist-btn');
+        const originalLabel = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = 'Sending…';
+
+        try {
+            const res = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            });
+            if (res.ok) {
+                form.reset();
+                btn.innerHTML = '✓ You\'re on the list';
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalLabel;
+                }, 4000);
+            } else {
+                const data = await res.json().catch(() => ({}));
+                alert(data.errors?.map(x => x.message).join(', ') || 'Something went wrong. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = originalLabel;
+            }
+        } catch (err) {
+            alert('Network error. Please try again.');
+            btn.disabled = false;
+            btn.innerHTML = originalLabel;
+        }
+    }
+
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
