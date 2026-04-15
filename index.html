@@ -61,6 +61,14 @@
             transition: background 0.2s;
         }
         .nav-cta:hover { background: var(--teal-dark); }
+        .nav-right { display: flex; align-items: center; gap: 22px; }
+        .nav-link {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px; font-weight: 600;
+            color: var(--slate-dark); text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: var(--deep-teal); }
 
         /* ─── HERO ─── */
         .hero {
@@ -489,7 +497,10 @@
 <nav>
     <div class="nav-inner">
         <a href="#" class="logo">Bralio <span class="logo-ai">AI</span></a>
-        <a href="#waitlist" class="nav-cta">Join the waitlist</a>
+        <div class="nav-right">
+            <a href="about.html" class="nav-link">About</a>
+            <a href="#waitlist" class="nav-cta">Join the waitlist</a>
+        </div>
     </div>
 </nav>
 
@@ -688,6 +699,7 @@
             <div class="step-time">5 min/day</div>
         </div>
     </div>
+    <p class="waitlist-note" style="max-width:620px; margin:32px auto 0;">Receive one short lesson per day via WhatsApp, plus on-demand coaching whenever you need it. Unsubscribe anytime by replying STOP.</p>
 </section>
 
 <!-- ═══ IS IT FOR YOU ═══ -->
@@ -764,15 +776,18 @@
         <div class="footer-brand">
             <div class="footer-logo">Bralio <span>AI</span></div>
             <div class="footer-contact">
-                Questions? <a href="mailto:bralioapp@gmail.com">bralioapp@gmail.com</a>
+                Operated by Braulio Ventures LLC<br>
+                30 N Gould St Ste R, Sheridan, WY 82801, USA
             </div>
         </div>
         <div class="footer-links">
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms of Service</a>
+            <a href="about.html">About</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="mailto:bralioapp@gmail.com">bralioapp@gmail.com</a>
         </div>
         <div class="footer-copy">
-            &copy; 2026 Bralio AI. All rights reserved.
+            &copy; 2026 Braulio Ventures LLC. All rights reserved.
         </div>
     </div>
 </footer>
